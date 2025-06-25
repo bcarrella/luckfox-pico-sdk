@@ -73,6 +73,10 @@ post_chk() {
 	default_rkipc_ini=/tmp/rkipc-factory-config.ini
 
 	if [ ! -f "/oem/usr/share/rkipc.ini" ]; then
+		lsmod | grep mis5001
+		if [ $? -eq 0 ]; then
+			ln -s -f /oem/usr/share/rkipc-mis5001-500w.ini $default_rkipc_ini
+		fi
 		lsmod | grep sc530ai
 		if [ $? -eq 0 ]; then
 			ln -s -f /oem/usr/share/rkipc-500w.ini $default_rkipc_ini
@@ -110,9 +114,9 @@ post_chk() {
 		echo "Error: not found rkipc.ini !!!"
 		exit -1
 	fi
-	if [ ! -f "$rkipc_ini" ]; then
+	#if [ ! -f "$rkipc_ini" ]; then
 		cp $default_rkipc_ini $rkipc_ini -f
-	fi
+	#fi
 
 	if [ ! -f "/userdata/image.bmp" ]; then
 		cp -fa /oem/usr/share/image.bmp /userdata/

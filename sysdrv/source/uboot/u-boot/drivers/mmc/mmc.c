@@ -2218,7 +2218,7 @@ int mmc_start_init(struct mmc *mmc)
 	 * We use the MMC config set by the bootrom.
 	 * So it is no need to reset the eMMC device.
 	 */
-	mmc_set_bus_width(mmc, 8);
+	mmc_set_bus_width(mmc, 1);
 	mmc_set_clock(mmc, 1);
 	mmc_set_timing(mmc, MMC_TIMING_LEGACY);
 	/* Send cmd7 to return stand-by state*/
@@ -2288,6 +2288,11 @@ int mmc_start_init(struct mmc *mmc)
 
 	/* Test for SD version 2 */
 	err = mmc_send_if_cond(mmc);
+  if (err) {
+    mmc_go_idle(mmc);
+	  mmc_get_blk_desc(mmc)->hwpart = 0;
+	  mmc_send_if_cond(mmc);
+  }
 
 	/* Now try to get the SD card's operating condition */
 	err = sd_send_op_cond(mmc);
