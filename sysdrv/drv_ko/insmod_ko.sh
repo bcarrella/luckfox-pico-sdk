@@ -83,15 +83,17 @@ __insmod rockit.ko mcu_fw_path="./hpmcu_wrap.bin" mcu_fw_addr=0xff6fe000 isp_max
 
 __insmod rve.ko
 
-__insmod x_tables.ko
-__insmod ip_tables.ko
-__insmod iptable_filter.ko
-__insmod nf_defrag_ipv4.ko
-__insmod nf_defrag_ipv6.ko
-__insmod libcrc32c.ko
-__insmod nf_conntrack.ko
-__insmod nf_nat.ko
-__insmod iptable_nat.ko
+__insmod ipv6.ko
+__insmod tun.ko
+#__insmod x_tables.ko
+#__insmod ip_tables.ko
+#__insmod iptable_filter.ko
+#__insmod nf_defrag_ipv4.ko
+#__insmod nf_defrag_ipv6.ko
+#__insmod libcrc32c.ko
+#__insmod nf_conntrack.ko
+#__insmod nf_nat.ko
+#__insmod iptable_nat.ko
 
 
 udevadm control --start-exec-queue
