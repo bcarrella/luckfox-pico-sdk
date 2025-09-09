@@ -1,0 +1,58 @@
+#!/bin/sh
+
+DAEMON="crond"
+PIDFILE="/var/run/$DAEMON.pid"
+
+CROND_ARGS=""
+
+# shellcheck source=/dev/null
+[ -r "/etc/default/$DAEMON" ] && . "/etc/default/$DAEMON"
+
+mkdir -p /var/spool/cron/crontabs
+cp -p /etc/crontabs/root /var/spool/cron/crontabs
+chmod 777 /var/spool/cron/crontabs/root
+
+##start-stop-daemon -S --quiet --make-pidfile --pidfile /var/run/crond.pid --background --exec /usr/sbin/crond -- -f
+
+start() {
+	printf 'Starting %s: ' "$DAEMON"
+	# shellcheck disable=SC2086 # we need the word splitting
+	start-stop-daemon -S --quiet --make-pidfile --pidfile "$PIDFILE" --background --exec "/usr/sbin/$DAEMON" -- -f $CROND_ARGS
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+stop() {
+	printf 'Stopping %s: ' "$DAEMON"
+	start-stop-daemon -K -q -p "$PIDFILE"
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		rm -f "$PIDFILE"
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+restart() {
+	stop
+	sleep 1
+	start
+}
+
+case "$1" in
+	start|stop|restart)
+		"$1";;
+	reload)
+		# Restart, since there is no true "reload" feature.
+		restart;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload}"
+		exit 1
+esac
