@@ -6,7 +6,11 @@ kmod-29
 out
 # source
 source/busybox
-source/buildroot
+# source/buildroot
+source/buildroot/buildroot-2023.02.6/*
+!source/buildroot/buildroot-2023.02.6/configs
+source/buildroot/buildroot-2023.02.6/configs/*
+!source/buildroot/buildroot-2023.02.6/configs/luckfox_pico_w_defconfig
 # source/kernel
 # source/uboot
 tools/board/android-tools/android-tools/
