@@ -100,6 +100,7 @@ __insmod xt_conntrack.ko
 __insmod xt_mark.ko
 __insmod xt_tcpudp.ko
 __insmod xt_MASQUERADE.ko
+__insmod iptable_mangle.ko
 
 #__insmod nfnetlink.ko
 #__insmod x_tables.ko
